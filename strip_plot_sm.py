@@ -366,6 +366,12 @@ def run():
     if i_nitrogen == ():
         text_area.insert(INSERT, 'Error: Nitrogen Value Missing, make sure to use enter to add it\n')
         return
+    list_of_variables=[i_nitrogen,i_minus_CA,i_minus_CB,i_minus_CO]
+    list_of_variable_names=['Nitrogen','CA carbon','CB Carbon','CO Carbon']
+    for variables,names in zip(list_of_variables,list_of_variable_names):
+        if variables == ():
+            continue
+        text_area.insert(INSERT, f'Values Used {names}: {variables}\n')
     if CA_only_flag.get() != 0:
         text_area.insert(INSERT, 'CA Only\n')
         HNCA_match()
