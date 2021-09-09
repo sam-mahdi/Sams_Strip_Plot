@@ -16,7 +16,7 @@ To use: Simply type in the values of your atoms.
 e.g. if you want to find the i+1, type in the nitrogen of your i, the i CA, i CB, and i CO. The printout will be of other peaks (only displaying nitrogen value) that share the CA, CB, and CO values you inputted. 
 
 
-I've added a new conversion tool (you'll find it where you upload your peaklist files). 
+**I've added a new conversion tool (you'll find it where you upload your peaklist files). If you used "pc" when peak picking, use this tool first (only works on assigned peaks)** 
 
 This will replace the nitrogen value of your 3D data of ONLY YOUR ASSIGNED PEAKS, with the value in your NHSQC. 
 
