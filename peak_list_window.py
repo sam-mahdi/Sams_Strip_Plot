@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 import os
+import re
 
 hnca=()
 hnca_directory=()
@@ -14,6 +15,13 @@ hncoca=()
 hncoca_directory=()
 NOE=()
 NOE_directory=()
+nhsqc=()
+nhsqc_directory=()
+old_nhsqc=()
+old_nhsqc_directory=()
+
+unassigned_flag1= IntVar()
+transfer_only_CB_HNCACB1= IntVar()
 
 
 class newTopLevel(object):
@@ -36,21 +44,39 @@ class newTopLevel(object):
         self.pdb_end_line.grid(row=2, column=1)
         self.newWindow.btn = Button(self.newWindow,text='browse',command=self.input_hnco)
         self.newWindow.btn.grid(row=2,column=2)
-        Label(self.newWindow, text="HNCOCA File\n Use Browse Butoon").grid(row=3)
+        Label(self.newWindow, text="HNCOCA File\n Use Browse Button").grid(row=3)
         self.pdb_chain_line = Entry(self.newWindow)
         self.pdb_chain_line.grid(row=3, column=1)
         self.newWindow.btn = Button(self.newWindow,text='browse',command=self.input_hncoca)
         self.newWindow.btn.grid(row=3,column=2)
-        Label(self.newWindow, text="HNCACO File\n Use Browse Butoon").grid(row=4)
+        Label(self.newWindow, text="HNCACO File\n Use Browse Button").grid(row=4)
         self.pdb_chain_line = Entry(self.newWindow)
         self.pdb_chain_line.grid(row=4, column=1)
         self.newWindow.btn = Button(self.newWindow,text='browse',command=self.input_hncaco)
         self.newWindow.btn.grid(row=4,column=2)
-        Label(self.newWindow, text="NOE File\n Use Browse Butoon").grid(row=5)
+        Label(self.newWindow, text="NOE File\n Use Browse Button").grid(row=5)
         self.pdb_chain_line = Entry(self.newWindow)
         self.pdb_chain_line.grid(row=5, column=1)
         self.newWindow.btn = Button(self.newWindow,text='browse',command=self.input_NOE)
         self.newWindow.btn.grid(row=5,column=2)
+        Label(self.newWindow, text="Peaklist File Converter").grid(row=6,column=1)
+        Label(self.newWindow, text="New NHSQC File\n Use Browse Button").grid(row=7)
+        self.pdb_chain_line = Entry(self.newWindow)
+        self.pdb_chain_line.grid(row=7, column=1)
+        self.newWindow.btn = Button(self.newWindow,text='browse',command=self.input_nhsqc)
+        self.newWindow.btn.grid(row=7,column=2)
+        Label(self.newWindow, text="Old NHSQC File\n Use Browse Button").grid(row=8)
+        self.pdb_chain_line = Entry(self.newWindow)
+        self.pdb_chain_line.grid(row=8, column=1)
+        self.newWindow.btn = Button(self.newWindow,text='browse',command=self.input_old_nhsqc)
+        self.newWindow.btn.grid(row=8,column=2)
+        self.newWindow.btn=Checkbutton(self.newWindow, text="Transfer Unassigned Peaks", variable=unassigned_flag1)
+        self.newWindow.btn.grid(row=9,column=1, sticky=W)
+        self.newWindow.btn=Checkbutton(self.newWindow, text="Transfer Only CBs in HNCACB", variable=transfer_only_CB_HNCACB1)
+        self.newWindow.btn.grid(row=9,column=2, sticky=W)
+        self.newWindow.btn = Button(self.newWindow,text='Convert',command=self.run)
+        self.newWindow.btn.grid(row=10,column=1)
+
 
     def input_hnca(self):
         fullpath = filedialog.askopenfilename(parent=self.newWindow, title='Choose a file')
@@ -94,6 +120,25 @@ class newTopLevel(object):
         NOE_directory=os.path.dirname(fullpath)
         NOE= os.path.basename(fullpath)
         label3=Label(self.newWindow,text=fullpath).grid(row=5,column=1)
+    def input_nhsqc(self):
+        fullpath = filedialog.askopenfilename(parent=self.newWindow, title='Choose a file')
+        global nhsqc
+        global nhsqc_directory
+        nhsqc_directory=os.path.dirname(fullpath)
+        nhsqc= os.path.basename(fullpath)
+        label3=Label(self.newWindow,text=fullpath).grid(row=7,column=1)
+    def input_old_nhsqc(self):
+        fullpath = filedialog.askopenfilename(parent=self.newWindow, title='Choose a file')
+        global old_nhsqc
+        global old_nhsqc_directory
+        old_nhsqc_directory=os.path.dirname(fullpath)
+        old_nhsqc= os.path.basename(fullpath)
+        label3=Label(self.newWindow,text=fullpath).grid(row=8,column=1)
+    def run(self):
+        unassigned_flag = unassigned_flag1.get()
+        transfer_only_CB_HNCACB = transfer_only_CB_HNCACB1.get()
+        from assignment_shifter import main
+        main(nhsqc,nhsqc_directory,hnca,hnca_directory,hncacb,hncacb_directory,hnco,hnco_directory,hncoca,hncoca_directory,old_nhsqc,old_nhsqc_directory,NOE,NOE_directory,hncaco,hncaco_directory,unassigned_flag,transfer_only_CB_HNCACB)
 
 def variables():
     return hnca,hnca_directory,hncacb, hncacb_directory, hnco, hnco_directory, hncaco, hncaco_directory, hncoca, hncoca_directory, NOE, NOE_directory
